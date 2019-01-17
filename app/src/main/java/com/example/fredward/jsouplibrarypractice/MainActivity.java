@@ -1,6 +1,7 @@
 package com.example.fredward.jsouplibrarypractice;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,15 +17,15 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//TODO: implement the method from My adapter
-//TODO: create a new Java class that will add the details to the layout
-public class MainActivity extends AppCompatActivity {
+//TODO: (completed)implement the method from My adapter
+//TODO: (completed)create a new Java class that will add the details to the layout
+public class MainActivity extends AppCompatActivity implements MyAdapter.OnClickStatus {
     private static final String TAG = "Main Activity";
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String mimageURL = "https://www.wallpapermaiden.com/resolution/1080x1920";
+    private String mimageURL = "https://www.wallpapermaiden.com/category/anime/1080x1920";
     ProgressDialog mProgressDialog;
     private String sourceImage, sourceName;
     ArrayList<String> imageList = new ArrayList<String>();
@@ -51,8 +52,24 @@ public class MainActivity extends AppCompatActivity {
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyAdapter(imageList, this,imageName);
+        mAdapter = new MyAdapter(imageList, this,imageName,this);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    /**
+     *
+     * @param i position of the itme that is clicked
+     *          it will create an intent with the data requested by the user
+     *          to detail_activity
+     */
+
+    @Override
+    public void OnClickReact(int i) {
+        Log.i(TAG, "OnClickReact: initiated due to user click");
+        Intent intent =  new Intent(this,DetailActivity.class);
+        intent.putExtra("image_url",imageList.get(i));
+        intent.putExtra("image_name",imageName.get(i));
+        startActivity(intent);
     }
 
     private class GetImage extends AsyncTask<Void, Void, Void> {

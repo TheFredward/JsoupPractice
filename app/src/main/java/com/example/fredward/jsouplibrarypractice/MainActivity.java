@@ -1,7 +1,6 @@
 package com.example.fredward.jsouplibrarypractice;
 
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+//TODO: implement the method from My adapter
+//TODO: create a new Java class that will add the details to the layout
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main Activity";
 
@@ -26,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private String mimageURL = "https://www.wallpapermaiden.com/resolution/1080x1920";
     ProgressDialog mProgressDialog;
-    private String sourceImage;
-    ArrayList imageList = new ArrayList();
+    private String sourceImage, sourceName;
+    ArrayList<String> imageList = new ArrayList<String>();
+    ArrayList<String> imageName = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyAdapter(imageList, this);
+        mAdapter = new MyAdapter(imageList, this,imageName);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private class GetImage extends AsyncTask<Void, Void, Void> {
-
-        Bitmap bitmap;
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -67,8 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 Elements image = document.getElementsByTag("img");
                 //for loop to iterate on webpage and find the source images
                 for(Element el:image){
+                    sourceName = el.attr("alt");
                     sourceImage = el.absUrl("src");
-                    imageList.add(sourceImage);
+                        imageName.add(sourceName);
+                        imageList.add(sourceImage);
 
                 }
                 Log.i(TAG,"Number of Images:" + image.size());

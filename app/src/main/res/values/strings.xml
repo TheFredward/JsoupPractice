@@ -2,4 +2,5 @@
     <string name="app_name">JsoupLibraryPractice</string>
     <string name="URL">https://www.wallpapermaiden.com/resolution/1080x1920</string>
     <string name="image_desc">images acquired from wallpapermaiden</string>
+    <string name="detail_image">detail image, selected by user</string>
 </resources>
